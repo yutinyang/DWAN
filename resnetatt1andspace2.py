@@ -77,35 +77,13 @@ class Waveletatt(nn.Module):
         """
         xori = x
         B, C, H, W= x.shape
-        # H, W = self.input_resolution
-        # B, L, C = x.shape
-        # assert L == H * W, "input feature has wrong size"
-        # assert H % 2 == 0 and W % 2 == 0, f"x size ({H}*{W}) are not even."
         x = x.view(B, H, W, C)
         x = x.permute(0, 3, 2, 1)
         # x0,x1,x2,x3 = Downsamplewave(x)
         ##x0,x1,x2,x3= self.downsamplewavelet(x)
         y = self.downsamplewavelet(x)
         y = self.fc(y).view(B, C, 1, 1)  # torch.Size([64, 256])-->torch.Size([64, 256, 1, 1])
-        y = xori * y.expand_as(xori)
-        # x0 =x0.permute(0,2,3,1)
-        # y = x0
-        # y = torch.sum(y, dim=[2, 3])
-        # y = self.fc(y).view(B, y.shape[1], 1, 1)
-        # return y
-
-        # y = torch.cat([x0, x1,x2,x3], 1)#torch.Size([64, 1024, 28, 28])
-        # # y = self.low_dim(y)
-        # y = torch.sum(y, dim=[2, 3])
-        # y = self.fc(y).view( B, y.shape[1], 1, 1)
-        # return y
-        ##y = torch.add (torch.add (torch.add (x1, x2), x3), x0)#torch.Size([64, 1024, 28, 28])
-        # y = self.fc(y).view( B, C, 1, 1)
-        # y = torch.mul(x, y)
-        # y = self.bn(y)
-        # y = self.ac(y)
-        # y = self.fc(y)
-        # return x*y
+        y = xori * y.expand_as(xori)       
         return y
 
 class Waveletattspace(nn.Module):
@@ -152,32 +130,11 @@ class Waveletattspace(nn.Module):
         # assert L == H * W, "input feature has wrong size"
         # assert H % 2 == 0 and W % 2 == 0, f"x size ({H}*{W}) are not even."
         x = x.view(B, H, W, C)
-        x = x.permute(0, 3, 2, 1)
-        # x0,x1,x2,x3 = Downsamplewave(x)
-        ##x0,x1,x2,x3= self.downsamplewavelet(x)
+        x = x.permute(0, 3, 2, 1)        
         y = self.downsamplewavelet(x)
-
         y = self.fc(y) # torch.Size([64, 256])-->torch.Size([64, 256, 1, 1])
         # y = self.fc(y).view(B, C, 1, 1)  # torch.Size([64, 256])-->torch.Size([64, 256, 1, 1])
-        y = xori * y.expand_as(xori)
-        # x0 =x0.permute(0,2,3,1)
-        # y = x0
-        # y = torch.sum(y, dim=[2, 3])
-        # y = self.fc(y).view(B, y.shape[1], 1, 1)
-        # return y
-
-        # y = torch.cat([x0, x1,x2,x3], 1)#torch.Size([64, 1024, 28, 28])
-        # # y = self.low_dim(y)
-        # y = torch.sum(y, dim=[2, 3])
-        # y = self.fc(y).view( B, y.shape[1], 1, 1)
-        # return y
-        ##y = torch.add (torch.add (torch.add (x1, x2), x3), x0)#torch.Size([64, 1024, 28, 28])
-        # y = self.fc(y).view( B, C, 1, 1)
-        # y = torch.mul(x, y)
-        # y = self.bn(y)
-        # y = self.ac(y)
-        # y = self.fc(y)
-        # return x*y
+        y = xori * y.expand_as(xori)       
         return y
 
 
@@ -331,14 +288,7 @@ class ResNetCIFARNormal(nn.Module):
         x = x.view(x.size(0), -1)
         x = self.fc(x)
         return x
-#
-# def dwt_ll(self,x):
-#     new_x = []
-#     for i in range (x.date.shape[0]):
-#         y = x[i, :, :, :]
-#         ll = dwtll(y)
-#         new_x.append(ll)
-#     return new_x
+
 
 
 
